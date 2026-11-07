@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio of Remixes</title>
+<meta name="description" content="Neil Shah — Portfolio of Remixes. Three versions of “Half Correct”: Copy, Combine, Transform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#0e0d0c;
+    --paper-2:#151412;
+    --ink:#ece6da;
+    --muted:#a39d92;
+    --rule:#2a2724;
+    --red:#e0383e;
+    --glass:rgba(14,13,12,.74);
+    --serif:"Source Serif 4", Georgia, serif;
+    --display:"Fraunces", Georgia, serif;
+    --hand:"Caveat", "Comic Sans MS", cursive;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--paper);scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--red);z-index:30}
+  .curtain{position:fixed;inset:0;background:#000;z-index:50;pointer-events:none;animation:curtain 1.8s ease .2s forwards}
+  @keyframes curtain{to{opacity:0;visibility:hidden}}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:20;mix-blend-mode:overlay;opacity:.12;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- top nav ---------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:25;display:flex;justify-content:space-between;align-items:center;
+    height:60px;padding:0 6vw;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    background:rgba(14,13,12,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+  section.block, header.cover{scroll-margin-top:60px}
+  .nav a{text-decoration:none}
+  .nav a:hover{color:var(--ink)}
+  .nav .links{display:flex;gap:1.4rem}
+  .nav .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:.6em;vertical-align:1px}
+
+  /* ---------- cover ---------- */
+  /* the cover is exactly one screen tall (nav included), and everything in it scales with screen height */
+  .cover{position:relative;height:100vh;height:100svh;min-height:420px;display:flex;align-items:center;padding:60px 6vw 0;overflow:hidden}
+  .cover-scene{position:absolute;inset:0;width:100%;height:100%;display:block;filter:saturate(0)}
+  .cover-scene .ball-color{filter:none}
+  .cover::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.55) 100%)}
+  .hero{position:relative;z-index:2;max-width:34rem;background:rgba(14,13,12,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:clamp(1.1rem,4vh,2.4rem) clamp(1.3rem,3vw,2.6rem);box-shadow:0 20px 50px rgba(0,0,0,.35);
+    max-height:calc(100svh - 60px - 4vh);overflow:hidden}
+  .kicker{font-size:.85rem;letter-spacing:.06em;color:var(--muted);margin:0 0 clamp(.6rem,2.4vh,1.6rem)}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,min(5.2vw,8.5vh),4.4rem);line-height:1;margin:0 0 clamp(.5rem,2vh,1.2rem);letter-spacing:-.02em}
+  h1 em{font-style:italic;color:var(--red)}
+  .sub{font-family:var(--display);font-size:clamp(1rem,min(2vw,3vh),1.45rem);line-height:1.4;margin:0 0 clamp(.6rem,2.4vh,1.6rem);color:#d8d1c4}
+  .credits{font-size:.82rem;line-height:1.7;letter-spacing:.03em;color:var(--muted);margin:0 0 clamp(.6rem,2.6vh,1.8rem)}
+  @media (max-height:600px){ .credits{display:none} }
+  .credits b{font-weight:400;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;display:block;color:var(--red);margin-bottom:.3rem}
+  .cue{display:flex;align-items:center;gap:.7rem;font-size:.95rem;color:var(--muted);text-decoration:none;margin:0}
+  .cue i{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--red);animation:cue 1.6s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+  .hero > *{animation:rise 1.6s cubic-bezier(.2,.7,.2,1) both}
+  .hero > :nth-child(1){animation-delay:1.2s}
+  .hero > :nth-child(2){animation-delay:.6s}
+  .hero > :nth-child(3){animation-delay:.9s}
+  .hero > :nth-child(4){animation-delay:1.5s}
+  .hero > :nth-child(5){animation-delay:2s}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .caption{position:absolute;right:18px;bottom:16px;z-index:3;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.55);padding:.45em .75em;border-radius:3px}
+
+  /* ---------- shared section chrome ---------- */
+  .wrap{max-width:68rem;margin:0 auto;padding:0 6vw}
+  section.block{position:relative;padding:16vh 0;border-top:1px solid var(--rule)}
+  .eyebrow{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin:0 0 .9rem}
+  h2{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,4.5vw,3.4rem);line-height:1.02;margin:0 0 1.2rem;letter-spacing:-.015em}
+  h2 em{font-style:italic;color:var(--red)}
+  .lede{font-size:1.14rem;line-height:1.75;color:#d8d1c4;max-width:34rem;margin:0}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+
+  /* ---------- table of contents ---------- */
+  .toc{list-style:none;margin:3rem 0 0;padding:0;counter-reset:toc}
+  .toc li{border-top:1px solid var(--rule)}
+  .toc li:last-child{border-bottom:1px solid var(--rule)}
+  .toc a{display:grid;grid-template-columns:4.2rem 1fr auto;align-items:baseline;gap:1rem;padding:1.25rem 0;text-decoration:none;transition:padding .35s ease, color .35s ease}
+  .toc a:hover{padding-left:.8rem;color:#fff}
+  .toc .num{font-family:var(--display);font-size:1.6rem;color:var(--muted)}
+  .toc a:hover .num{color:var(--red)}
+  .toc .t{font-family:var(--display);font-size:clamp(1.25rem,2.4vw,1.7rem)}
+  .toc .t small{display:block;font-family:var(--serif);font-size:.9rem;color:var(--muted);margin-top:.25rem}
+  .toc .pg{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+  /* ---------- deliverables ---------- */
+  .deliv{display:grid;grid-template-columns:1fr 1.15fr;gap:5vw;align-items:center}
+  .deliv.flip{grid-template-columns:1.15fr 1fr}
+  .deliv.flip .text{order:2}
+  .bignum{position:absolute;top:9vh;right:6vw;font-family:var(--display);font-style:italic;font-size:clamp(7rem,16vw,13rem);line-height:1;color:rgba(236,230,218,.04);pointer-events:none;user-select:none}
+  .meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 0}
+  .tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:99px;padding:.35em .85em}
+  .tag.pts{color:var(--ink);border-color:rgba(224,56,62,.5)}
+  .actions{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;margin-top:2rem}
+  .btn{display:inline-flex;align-items:center;gap:.75rem;text-decoration:none;font-family:var(--display);font-size:1.15rem;
+    background:var(--red);color:#fff;padding:.85rem 1.4rem;border-radius:4px;box-shadow:0 10px 30px rgba(224,56,62,.25);transition:transform .25s ease, box-shadow .25s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(224,56,62,.38)}
+  .btn svg{width:18px;height:18px}
+  .sublink{display:inline-flex;align-items:center;gap:.6rem;font-size:.98rem;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:.2rem;transition:color .25s ease,border-color .25s ease}
+  .sublink:hover{color:var(--ink);border-color:var(--red)}
+  .sublink .doc{display:inline-block;width:14px;height:17px;border:1.5px solid currentColor;border-radius:2px;position:relative}
+  .sublink .doc::after{content:"";position:absolute;left:2px;right:2px;top:4px;height:6px;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+  .pending{font-family:var(--hand);font-size:1.25rem;color:var(--muted);margin:.2rem 0 0}
+
+  /* previews */
+  .preview{position:relative;display:block;text-decoration:none;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 70px rgba(0,0,0,.5);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  .preview:hover{transform:translateY(-4px) rotate(-.4deg)}
+  .preview svg{display:block;width:100%;height:auto}
+  .browser-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#1d1b19;border-bottom:1px solid #000}
+  .browser-bar i{width:9px;height:9px;border-radius:50%;background:#3a3632}
+  .browser-bar span{margin-left:10px;font-size:.72rem;letter-spacing:.04em;color:var(--muted);background:#121110;border-radius:3px;padding:.2em .8em;flex:1;max-width:16rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .p-scene{filter:saturate(0);transition:filter 1.6s ease}
+  .preview:hover .p-scene, .preview.in .p-scene{filter:saturate(1)}
+  .play{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(224,56,62,.92);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(224,56,62,.18);transition:transform .3s ease, box-shadow .3s ease}
+  .preview:hover .play{transform:scale(1.08);box-shadow:0 0 0 16px rgba(224,56,62,.14)}
+  .play::after{content:"";margin-left:6px;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent}
+  .timecode{position:absolute;right:12px;bottom:12px;font-size:.72rem;letter-spacing:.1em;color:#fff;background:rgba(0,0,0,.6);padding:.3em .6em;border-radius:3px}
+  .rec{position:absolute;left:12px;top:12px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.55);padding:.3em .6em;border-radius:3px}
+  .rec::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:.5em;animation:blink 1.2s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .paper{background:#f3efe6;border-color:#d8d1c4;transform:rotate(1.2deg)}
+  .paper:hover{transform:rotate(0) translateY(-4px)}
+  .paper img{display:block;width:100%;height:auto}
+  .paper .tape{position:absolute;top:-8px;left:50%;width:110px;height:26px;margin-left:-55px;background:rgba(236,226,190,.75);transform:rotate(-3deg);box-shadow:0 2px 4px rgba(0,0,0,.15)}
+
+  .video-frame{background:#000;aspect-ratio:16/9}
+  .video-frame:hover{transform:none}
+  .video-frame iframe{display:block;width:100%;height:100%;border:0;background:#000}
+
+  /* ---------- background doc strip ---------- */
+  .docstrip{display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:center;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:2rem 2.2rem}
+  .docicon{width:58px;height:72px;border:2px solid var(--ink);border-radius:4px;position:relative}
+  .docicon::before{content:"";position:absolute;left:10px;right:10px;top:16px;height:30px;
+    background:repeating-linear-gradient(var(--muted) 0 2px, transparent 2px 9px)}
+  .docicon::after{content:"";position:absolute;right:-2px;top:-2px;width:16px;height:16px;background:var(--red);border-radius:0 4px 0 6px}
+  .docstrip h3{font-family:var(--display);font-weight:400;font-size:1.6rem;margin:0 0 .4rem}
+  .docstrip p{margin:0;color:var(--muted);line-height:1.6}
+
+  /* ---------- footer ---------- */
+  .end{border-top:1px solid var(--rule);padding:10vh 0}
+  .end p{color:var(--muted);font-size:.95rem;line-height:1.7;margin:0}
+  .fin{display:flex;align-items:center;gap:.8rem;margin-top:1.4rem!important}
+  .fin i{width:12px;height:12px;border-radius:50%;background:var(--red)}
+
+  /* ---------- toast for links not yet added ---------- */
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:40;font-family:var(--hand);font-size:1.4rem;
+    background:#f3efe6;color:#1d1b18;padding:.4em 1em;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .3s ease, transform .3s ease;pointer-events:none}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* ---------- phones ---------- */
+  @media (max-width: 860px){
+    .nav{padding:12px 16px}
+    .nav .links{display:none}
+    .cover{padding:60px 16px 0;align-items:center}
+    .hero{padding:clamp(1rem,3vh,1.6rem) 1.3rem}
+    .wrap{padding:0 16px}
+    section.block{padding:11vh 0}
+    .deliv,.deliv.flip{grid-template-columns:1fr;gap:2.4rem}
+    .deliv.flip .text{order:0}
+    .toc a{grid-template-columns:2.8rem 1fr}
+    .toc .pg{display:none}
+    .docstrip{grid-template-columns:1fr;gap:1.2rem;padding:1.5rem}
+    .caption{right:auto;left:10px;top:70px;bottom:auto;font-size:.62rem}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .cue i,.hero > *,.rec::before{animation:none!important}
+    .curtain{display:none}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="curtain" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress"></div>
+<div class="toast" id="toast" role="status" aria-live="polite">link coming soon</div>
+
+<nav class="nav">
+  <a href="#cover"><span class="dot"></span>Neil Shah · Portfolio of Remixes</a>
+  <div class="links">
+    <a href="#contents">Contents</a>
+    <a href="#d1">Copy</a>
+    <a href="#d2">Combine</a>
+    <a href="#d3">Transform</a>
+  </div>
+</nav>
+
+<!-- ===================== COVER ===================== -->
+<header class="cover" id="cover">
+  <svg class="cover-scene" id="coverScene" viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#6fb9e6"/><stop offset=".75" stop-color="#bfe3f2"/><stop offset="1" stop-color="#fde2bf"/>
+      </linearGradient>
+      <radialGradient id="g-ball" cx=".35" cy=".35" r=".75">
+        <stop offset="0" stop-color="#ff6b6b"/><stop offset=".6" stop-color="#d1232a"/><stop offset="1" stop-color="#8e0f15"/>
+      </radialGradient>
+      <g id="tree">
+        <path d="M-9,0 L-5,-130 L5,-130 L9,0 Z" fill="#6d4c35"/>
+        <g stroke="#6d4c35" stroke-linecap="round" fill="none">
+          <path d="M0,-100 L-42,-160" stroke-width="7"/><path d="M0,-118 L40,-180" stroke-width="7"/>
+          <path d="M0,-128 L-8,-205" stroke-width="6"/><path d="M-26,-138 L-52,-150" stroke-width="4"/>
+        </g>
+        <g fill="#4f8f3a" opacity=".9">
+          <circle cx="-38" cy="-160" r="38"/><circle cx="40" cy="-172" r="42"/><circle cx="0" cy="-205" r="46" fill="#62a547"/>
+        </g>
+      </g>
+    </defs>
+    <rect x="-600" y="-300" width="2000" height="1200" fill="url(#g-sky)"/>
+    <circle cx="560" cy="130" r="44" fill="#ffc94a"/>
+    <g fill="#fff" opacity=".9"><ellipse cx="250" cy="110" rx="62" ry="18"/><ellipse cx="290" cy="98" rx="38" ry="16"/><ellipse cx="660" cy="210" rx="50" ry="14"/></g>
+    <path d="M-600,430 L0,420 C140,380 260,400 380,410 C520,420 640,385 800,400 L1400,405 L1400,900 L-600,900 Z" fill="#93c26c"/>
+    <path d="M-600,455 L1400,455 L1400,900 L-600,900 Z" fill="#5f9a4a"/>
+    <use href="#tree" transform="translate(400 418) scale(.55)"/>
+    <use href="#tree" transform="translate(115 470) scale(1.05)"/>
+    <use href="#tree" transform="translate(655 472) scale(1.2)"/>
+    <g fill="#7a5233">
+      <rect x="160" y="392" width="120" height="7" rx="2"/><rect x="160" y="405" width="120" height="6" rx="2"/>
+      <rect x="156" y="424" width="128" height="8" rx="2"/><rect x="166" y="432" width="7" height="38"/><rect x="267" y="432" width="7" height="38"/>
+    </g>
+    <g stroke="#2a2a2a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <circle cx="208" cy="355" r="12" fill="#2a2a2a" stroke="none"/>
+      <path d="M195,349 Q208,334 222,349 Z" stroke-width="4" fill="#2a2a2a"/>
+      <path d="M200,420 Q197,395 205,371"/><path d="M200,420 L236,423 L238,466 L250,467"/><path d="M203,382 L218,404 L232,416"/>
+    </g>
+  </svg>
+  <!-- the ball sits outside the grayscale filter, so it is the only thing in color -->
+  <svg class="cover-scene ball-color" viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="filter:none">
+    <defs>
+      <radialGradient id="g-ball2" cx=".35" cy=".35" r=".75">
+        <stop offset="0" stop-color="#ff6b6b"/><stop offset=".6" stop-color="#d1232a"/><stop offset="1" stop-color="#8e0f15"/>
+      </radialGradient>
+    </defs>
+    <g transform="translate(560 0)">
+      <g id="coverBall">
+        <ellipse cx="0" cy="469" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>
+        <circle cx="0" cy="455" r="14" fill="url(#g-ball2)"/>
+        <path d="M-10,446 Q0,455 -10,464 M10,446 Q0,455 10,464" stroke="#fbe9e9" stroke-width="1.3" fill="none" opacity=".75"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="hero">
+    <p class="kicker">Neil Shah · Prof. Girdharry · WRT1001-14 · Fall 2026</p>
+    <h1>One essay,<br><em>three</em> remixes</h1>
+    <p class="sub">Stanley Fish’s theory of reading is dense and easy to get lost in. This portfolio makes it something you can watch, hear, and hold, through a short film about an old man and a red ball.</p>
+    <p class="credits"><b>Inside</b>01 · Copy: the website<br>02 · Combine: the video<br>03 · Transform: the storyboard</p>
+    <a class="cue" href="#why"><i></i> Scroll to begin.</a>
+  </div>
+  <div class="caption">Portfolio of Remixes · WRT1001</div>
+</header>
+
+<main>
+  <!-- ===================== WHY READ THIS ===================== -->
+  <section class="block" id="why">
+    <div class="wrap">
+      <p class="eyebrow reveal">Why look at this</p>
+      <h2 class="reveal">Fish, <em>without the headache</em></h2>
+      <p class="lede reveal">Stanley Fish’s essay is honestly hard to get through, so I took his main idea, that readers make meaning instead of just finding it, tested it on a short film called “Ball,” and turned it into a website, a video, and a drawing so it actually makes sense.</p>
+    </div>
+  </section>
+
+  <!-- ===================== TABLE OF CONTENTS ===================== -->
+  <section class="block" id="contents">
+    <div class="wrap">
+      <p class="eyebrow reveal">Contents</p>
+      <h2 class="reveal">What’s <em>inside</em></h2>
+      <ol class="toc">
+        <li class="reveal"><a href="#cover"><span class="num">00</span><span class="t">Cover<small>One essay, three remixes</small></span><span class="pg">Page 1</span></a></li>
+        <li class="reveal"><a href="#why"><span class="num">—</span><span class="t">Why Look at This<small>Fish, without the headache</small></span><span class="pg">Page 2</span></a></li>
+        <li class="reveal"><a href="#contents"><span class="num">—</span><span class="t">Table of Contents<small>You are here</small></span><span class="pg">Page 3</span></a></li>
+        <li class="reveal"><a href="#d1"><span class="num">01</span><span class="t">Deliverable 1 · Copy<small>The scrolling visual essay, pure AI</small></span><span class="pg">Page 4</span></a></li>
+        <li class="reveal"><a href="#d2"><span class="num">02</span><span class="t">Deliverable 2 · Combine<small>The website, edited by me and narrated in my voice</small></span><span class="pg">Page 5</span></a></li>
+        <li class="reveal"><a href="#d3"><span class="num">03</span><span class="t">Deliverable 3 · Transform<small>A hand-drawn storyboard</small></span><span class="pg">Page 6</span></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== DELIVERABLE 1 · COPY ===================== -->
+  <section class="block" id="d1">
+    <div class="bignum" aria-hidden="true">01</div>
+    <div class="wrap deliv">
+      <div class="text">
+        <p class="eyebrow reveal">Deliverable 1 · Copy</p>
+        <h2 class="reveal">The essay, <em>as a screen</em></h2>
+        <p class="lede reveal">My essay turned into a scrolling visual essay. The text runs down one side and the black-and-white park from “Ball” stays on the other, where color returns to the sky, the ground, and the trees as you read. This version is pure AI: the output copied exactly as it came, with none of my own edits.</p>
+        <div class="meta reveal"><span class="tag">Website</span><span class="tag">Pure AI output</span></div>
+        <div class="actions reveal">
+          <!-- Deliverable 1 website (local copy in deliverable-1/) -->
+          <a class="btn" href="deliverable-1/index.html" target="_blank" rel="noopener">Open the website
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          <!-- Deliverable 1 prompt / chat links / background doc -->
+          <a class="sublink" href="https://babson-my.sharepoint.com/:w:/g/personal/nshah8_babson_edu/IQBuaiKfcQP4T7NeVRaZ_R_4AT7EquxasRtDl076x0dkCK4?e=oubmbO" target="_blank" rel="noopener"><span class="doc"></span>Prompt, chat links &amp; background</a>
+        </div>
+      </div>
+
+      <!-- Deliverable 1 website (preview is clickable too) -->
+      <a class="preview reveal" href="deliverable-1/index.html" target="_blank" rel="noopener" aria-label="Preview of the Half Correct website">
+        <div class="browser-bar"><i></i><i></i><i></i><span>Half Correct · a scrolling visual essay</span></div>
+        <!-- matches Deliverable 1's layout: paper-colored text column on the left, the film's park on the right -->
+        <svg viewBox="0 0 800 500" aria-hidden="true">
+          <rect width="336" height="500" fill="#f3efe6"/>
+          <text x="34" y="150" font-family="Source Serif 4, serif" font-size="10.5" fill="#6b655c" letter-spacing=".6">Neil Shah · Prof. Girdharry · WRT1001-14</text>
+          <text x="32" y="222" font-family="Fraunces, serif" font-size="58" fill="#1d1b18">Half</text>
+          <text x="32" y="278" font-family="Fraunces, serif" font-style="italic" font-size="58" fill="#d1232a">Correct</text>
+          <text x="34" y="314" font-family="Fraunces, serif" font-size="15" fill="#3b3731">Fish, “Ball,” and the Limits of Reading</text>
+          <circle cx="40" cy="356" r="6" fill="#d1232a"/>
+          <text x="54" y="360" font-family="Source Serif 4, serif" font-size="11" fill="#6b655c">Scroll, and watch the color come back.</text>
+          <svg x="336" y="0" width="464" height="500" viewBox="200 60 520 560" preserveAspectRatio="xMidYMax slice">
+            <g class="p-scene">
+              <rect x="0" y="0" width="900" height="700" fill="url(#g-sky)"/>
+              <circle cx="560" cy="130" r="44" fill="#ffc94a"/>
+              <path d="M0,420 C140,380 260,400 380,410 C520,420 640,385 800,400 L800,700 L0,700 Z" fill="#93c26c"/>
+              <path d="M0,455 C200,445 600,450 800,455 L800,700 L0,700 Z" fill="#5f9a4a"/>
+              <use href="#tree" transform="translate(400 418) scale(.55)"/>
+              <use href="#tree" transform="translate(655 472) scale(1.2)"/>
+              <g fill="#7a5233">
+                <rect x="160" y="392" width="120" height="7" rx="2"/><rect x="160" y="405" width="120" height="6" rx="2"/>
+                <rect x="156" y="424" width="128" height="8" rx="2"/><rect x="267" y="432" width="7" height="38"/>
+              </g>
+              <g stroke="#2a2a2a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <circle cx="208" cy="355" r="12" fill="#2a2a2a" stroke="none"/>
+                <path d="M200,420 Q197,395 205,371"/><path d="M200,420 L236,423 L238,466 L250,467"/><path d="M203,382 L218,404 L232,416"/>
+              </g>
+            </g>
+            <circle cx="440" cy="455" r="14" fill="url(#g-ball)"/>
+          </svg>
+          <rect x="0" y="0" width="140" height="3" fill="#d1232a"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== DELIVERABLE 2 · COMBINE ===================== -->
+  <section class="block" id="d2">
+    <div class="bignum" aria-hidden="true">02</div>
+    <div class="wrap deliv flip">
+      <div class="text">
+        <p class="eyebrow reveal">Deliverable 2 · Combine</p>
+        <h2 class="reveal">The website, <em>in my voice</em></h2>
+        <p class="lede reveal">Here the website stops being purely AI. I edited it with my own ideas, opinions, and thoughts, then recorded a walkthrough where I narrate over it. Deliverable 1 is what the AI made. This one adds my voice and my own thinking on Fish and “Ball.”</p>
+        <div class="meta reveal"><span class="tag">Video</span><span class="tag">AI + my edits</span><span class="tag">My voiceover</span></div>
+        <div class="actions reveal">
+          <!-- Deliverable 2 video: opens the full-size viewing page inside the portfolio -->
+          <a class="btn" href="deliverable-2.html">Watch it full size
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></a>
+          <!-- Deliverable 2 prompt / chat links / evidence of co-creation doc -->
+          <a class="sublink" href="https://babson-my.sharepoint.com/:w:/g/personal/nshah8_babson_edu/IQDs6Rc45CxNRrDlzD4GfRpOAcEgai2qQPKl85baJmi7xUQ?e=lACZZf" target="_blank" rel="noopener"><span class="doc"></span>Prompt, chat links &amp; evidence of co-creation</a>
+        </div>
+      </div>
+
+      <!-- Deliverable 2 video (YouTube: Jsf09KC0d80), playable right here -->
+      <div class="preview video-frame reveal">
+        <iframe src="https://www.youtube.com/embed/Jsf09KC0d80?rel=0&modestbranding=1&playsinline=1" title="Deliverable 2 · The website, in my voice" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DELIVERABLE 3 · TRANSFORM ===================== -->
+  <section class="block" id="d3">
+    <div class="bignum" aria-hidden="true">03</div>
+    <div class="wrap deliv">
+      <div class="text">
+        <p class="eyebrow reveal">Deliverable 3 · Transform</p>
+        <h2 class="reveal">Back to <em>paper</em></h2>
+        <p class="lede reveal">The essay transformed one more time, out of the screen and onto a page. A hand-drawn storyboard that walks through the argument in six panels: the poem, English class, the return of color, my grandpa, the rewind, and the summary.</p>
+        <div class="meta reveal"><span class="tag">Storyboard</span><span class="tag">Pen on paper</span></div>
+        <div class="actions reveal">
+          <!-- Deliverable 3: opens the full-size viewing page inside the portfolio -->
+          <a class="btn" href="deliverable-3.html">See it full size
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></a>        </div>
+      </div>
+
+      <!-- Deliverable 3 storyboard (scan from deliverable-3/storyboard.pdf) -->
+      <a class="preview paper reveal" href="deliverable-3.html" aria-label="Open the storyboard full size">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="deliverable-3/storyboard.jpg" width="2486" height="1927" loading="lazy" alt="Hand-drawn six-panel storyboard titled The Poem, English Class, Return of Color, my grandpa and me playing cricket, The Rewind, and The Summary.">
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== BACKGROUND DOC ===================== -->
+  <section class="block" id="background">
+    <div class="wrap">
+      <div class="docstrip reveal">
+        <div class="docicon" aria-hidden="true"></div>
+        <div>
+          <h3>Prompts &amp; background</h3>
+          <p>Every prompt, chat link, and note on how the three remixes were made, collected in one document.</p>
+        </div>
+        <!-- Main prompts & background doc (everything compiled) -->
+        <a class="btn" href="https://babson-my.sharepoint.com/:w:/g/personal/nshah8_babson_edu/IQDEAccHBKSxR7oMfeIgpFLTAfK3ZXkTfMjrCT5u8czqsAw?e=BiBnB4" target="_blank" rel="noopener">Open the doc
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="wrap">
+    <p>Original essay: “Half Correct: Fish, ‘Ball,’ and the Limits of Reading.” Works discussed: Stanley Fish, “How to Recognize a Poem When You See One” (1980); John Baxa, “Ball” (2012).</p>
+    <p class="fin"><i></i> Neil Shah · WRT1001-14</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bar = document.getElementById('progress');
+  const toast = document.getElementById('toast');
+
+  // progress bar
+  function onScroll() {
+    const h = innerHeight;
+    const max = document.documentElement.scrollHeight - h;
+    bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + '%';
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // reveal on scroll; previews regain color when they come into view
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { threshold: .25 });
+  document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+  // links not added yet: stay on the page and say so
+  let timer;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-pending]');
+    if (!a || (a.getAttribute('href') || '#') !== '#') return;
+    e.preventDefault();
+    toast.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(() => toast.classList.remove('show'), 1600);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deliverable 2 · Combine</title>
+<meta name="description" content="Neil Shah — Portfolio of Remixes. Deliverable 2: the website, edited by me and narrated in my voice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#0e0d0c;
+    --paper-2:#151412;
+    --ink:#ece6da;
+    --muted:#a39d92;
+    --rule:#2a2724;
+    --red:#e0383e;
+    --serif:"Source Serif 4", Georgia, serif;
+    --display:"Fraunces", Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--paper)}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:20;mix-blend-mode:overlay;opacity:.12;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:25;display:flex;justify-content:space-between;align-items:center;
+    height:60px;padding:0 6vw;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    background:rgba(14,13,12,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+  .nav a{text-decoration:none}
+  .nav a:hover{color:var(--ink)}
+  .nav .links{display:flex;gap:1.4rem}
+  .nav .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:.6em;vertical-align:1px}
+
+  /* the screen: fills the window under the nav */
+  .room{min-height:100vh;min-height:100svh;padding:calc(60px + 3vh) 6vw 3vh;display:flex;flex-direction:column;justify-content:center;gap:1.4rem}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap}
+  .eyebrow{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin:0 0 .5rem}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.05;margin:0;letter-spacing:-.015em}
+  h1 em{font-style:italic;color:var(--red)}
+  .screen{position:relative;width:100%;max-width:calc((100svh - 60px - 15rem) * 16 / 9);min-width:min(100%,520px);margin:0 auto;
+    aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .screen iframe{display:block;width:100%;height:100%;border:0;background:#000}
+  .screen:fullscreen{border-radius:0;border:0;max-width:none}
+  .screen:-webkit-full-screen{border-radius:0;border:0;max-width:none;width:100%;height:100%}
+  .controls{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;width:100%;max-width:calc((100svh - 60px - 15rem) * 16 / 9);min-width:min(100%,520px);margin:0 auto}
+  .btn{display:inline-flex;align-items:center;gap:.7rem;text-decoration:none;font-family:var(--display);font-size:1.05rem;cursor:pointer;
+    background:var(--red);color:#fff;border:0;padding:.75rem 1.25rem;border-radius:4px;box-shadow:0 10px 30px rgba(224,56,62,.25);transition:transform .25s ease, box-shadow .25s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(224,56,62,.38)}
+  .btn svg{width:18px;height:18px}
+  .ghost{display:inline-flex;align-items:center;gap:.6rem;font-size:.98rem;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:.2rem;transition:color .25s ease,border-color .25s ease}
+  .ghost:hover{color:var(--ink);border-color:var(--red)}
+  .back{font-size:.9rem}
+
+  /* notes under the screen */
+  .notes{border-top:1px solid var(--rule);padding:9vh 6vw}
+  .notes-inner{max-width:52rem;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+  .notes h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0 0 .8rem}
+  .notes p{color:#d8d1c4;line-height:1.75;margin:0 0 1rem}
+  .pager{max-width:52rem;margin:4rem auto 0;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:1.6rem}
+  .pager a{text-decoration:none;color:var(--muted)}
+  .pager a:hover{color:var(--ink)}
+  .pager small{display:block;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
+  .pager span{font-family:var(--display);font-size:1.2rem}
+
+  @media (max-width: 860px){
+    .nav{padding:0 16px}
+    .nav .links{display:none}
+    .room{padding:calc(60px + 3vh) 16px 4vh;justify-content:flex-start}
+    .screen{min-width:0;max-width:100%}
+    .notes{padding:8vh 16px}
+    .notes-inner{grid-template-columns:1fr;gap:1.5rem}
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a href="index.html#cover"><span class="dot"></span>Neil Shah · Portfolio of Remixes</a>
+  <div class="links">
+    <a href="index.html#contents">Contents</a>
+    <a href="index.html#d1">Copy</a>
+    <a href="index.html#d2">Combine</a>
+    <a href="index.html#d3">Transform</a>
+  </div>
+</nav>
+
+<main class="room">
+  <div class="head">
+    <div>
+      <p class="eyebrow">Deliverable 2 · Combine</p>
+      <h1>The website, <em>in my voice</em></h1>
+    </div>
+    <a class="ghost back" href="index.html#d2">← Back to the portfolio</a>
+  </div>
+
+  <div class="screen" id="screen">
+    <iframe src="https://www.youtube.com/embed/Jsf09KC0d80?rel=0&modestbranding=1&playsinline=1" title="Deliverable 2 · The website, in my voice" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+  <div class="controls" id="controls">
+    <button class="btn" id="fs" type="button">Full screen
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    <a class="ghost" href="https://www.youtube.com/watch?v=Jsf09KC0d80" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+    <a class="ghost" href="https://babson-my.sharepoint.com/:w:/g/personal/nshah8_babson_edu/IQDs6Rc45CxNRrDlzD4GfRpOAcEgai2qQPKl85baJmi7xUQ?e=lACZZf" target="_blank" rel="noopener">Prompt, chat links &amp; evidence of co-creation ↗</a>
+  </div>
+</main>
+
+<section class="notes">
+  <div class="notes-inner">
+    <div>
+      <h2>What this is</h2>
+      <p>A recorded walkthrough of the website. I scroll through it and narrate over it in my own voice.</p>
+    </div>
+    <div>
+      <h2>How it differs from Deliverable 1</h2>
+      <p>Deliverable 1 is pure AI. For this version I edited the website with my own ideas, opinions, and thoughts on Fish and “Ball,” so it combines what the AI built with my own thinking.</p>
+    </div>
+  </div>
+  <div class="pager">
+    <a href="index.html#d1"><small>← Previous</small><span>Deliverable 1 · Copy</span></a>
+    <a href="index.html#d3" style="text-align:right"><small>Next →</small><span>Deliverable 3 · Transform</span></a>
+  </div>
+</section>
+
+<script>
+(() => {
+  const screen = document.getElementById('screen');
+  const fs = document.getElementById('fs');
+
+  // full screen: the player itself, on this page
+  const enter = () => {
+    if (screen.requestFullscreen) screen.requestFullscreen().catch(() => {});
+    else if (screen.webkitRequestFullscreen) screen.webkitRequestFullscreen();
+  };
+  fs.addEventListener('click', enter);
+
+  // F toggles full screen (works while the page, not the video, has focus)
+  addEventListener('keydown', e => {
+    if (e.key !== 'f' && e.key !== 'F') return;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else enter();
+  });
+})();
+</script>
+</body>
+</html>
